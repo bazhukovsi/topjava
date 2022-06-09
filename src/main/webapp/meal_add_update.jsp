@@ -7,14 +7,9 @@
     <title>Add (edit) new meal</title>
 </head>
 <body>
-<h2>Ввод (редактирование) записи о еде</h2>
+<h2>${title}</h2>
 <form method="POST" action='meals' name="meal_add_update">
     <table border="2" bgcolor="#e6e6fa">
-        <tr>
-            <td>ID meal</td>
-            <td><input type="text" readonly="readonly" name="id"
-                       value="<c:out value="${meal.id}" />"/></td>
-        </tr>
         <br/>
         <tr>
             <td> Meal Date Time :</td>
@@ -30,12 +25,13 @@
         <br/>
         <tr>
             <td>Calories :</td>
-            <td><input type="text" name="calories"
+            <td><input type="number" name="calories"
                        value="<c:out value="${meal.calories}" />"/></td>
         </tr>
     </table>
     <br>
     <input type="submit" value="Записать (отредактировать) еду"/>
+
 </form>
 </body>
 </html>
