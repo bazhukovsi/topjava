@@ -1,9 +1,11 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
@@ -12,6 +14,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class UserService {
 
+    @Autowired
     private final UserRepository repository;
 
     public UserService(UserRepository repository) {
@@ -20,6 +23,9 @@ public class UserService {
 
     public User create(User user) {
         return repository.save(user);
+    }
+    public void update(User user) {
+        checkNotFoundWithId(repository.save(user), user.getId());
     }
 
     public void delete(int id) {
@@ -34,11 +40,9 @@ public class UserService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
-    public List<User> getAll() {
+    public Collection<User> getAll() {
         return repository.getAll();
     }
 
-    public void update(User user) {
-        checkNotFoundWithId(repository.save(user), user.getId());
-    }
+
 }
