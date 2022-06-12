@@ -10,7 +10,7 @@ import java.util.List;
 public class AdminRestController extends AbstractUserController {
 
     @Override
-    public Collection<User> getAll() {
+    public List<User> getAll() {
         return super.getAll();
     }
 

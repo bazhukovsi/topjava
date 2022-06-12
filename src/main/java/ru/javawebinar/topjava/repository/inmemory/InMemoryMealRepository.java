@@ -3,11 +3,12 @@ package ru.javawebinar.topjava.repository.inmemory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,22 +26,22 @@ public class InMemoryMealRepository implements MealRepository {
             = (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime());
 
     {
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0),
-                "Завтрак", 10), USER_ID_ONE);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 25, 10, 0),
-                "Завтрак", 20), USER_ID_ONE);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 20, 13, 0),
-                "Обед", 30), USER_ID_ONE);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0),
-                "Ужин", 10), USER_ID_TWO);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0),
-                "Еда на граничное значение", 10), USER_ID_TWO);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0),
-                "Завтрак", 10), USER_ID_TWO);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0),
-                "Обед", 10), ADMIN_ID);
-        save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0),
-                "Ужин", 10), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 10, 0),
+                "ЗавтракUser1", 10), USER_ID_ONE);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 10, 0),
+                "УжинUser1", 20), USER_ID_ONE);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 13, 0),
+                "ОбедUser1", 30), USER_ID_ONE);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 20, 0),
+                "УжинUser2", 10), USER_ID_TWO);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 0, 0),
+                "Еда на граничное значениеUser2", 10), USER_ID_TWO);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 10, 0),
+                "ЗавтракUser2", 10), USER_ID_TWO);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 13, 0),
+                "ОбедAdmin", 10), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2022, Month.JUNE, 11, 20, 0),
+                "УжинAdmin", 10), ADMIN_ID);
     }
 
     @Override
@@ -59,8 +60,9 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public boolean delete(int id) {
-        return repository.remove(id) != null;
+    public boolean delete(int id, int userId) {
+        Map<Integer, Meal> userMeals = repository.get(userId);
+        return userMeals != null && userMeals.remove(id) != null;
     }
 
     @Override
@@ -70,8 +72,18 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         return repository.get(userId).values().stream().sorted(MEAL_COMPARATOR).toList();
     }
+
+    @Override
+    public List<Meal> getBeetweenDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        return getAll(userId).stream()
+                .filter(meal -> DateTimeUtil.isBetweenDateTime(meal.getDateTime(), startDateTime, endDateTime))
+                .sorted(MEAL_COMPARATOR)
+                .toList();
+    }
+
+
 }
 

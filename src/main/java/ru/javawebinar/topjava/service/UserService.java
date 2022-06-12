@@ -14,7 +14,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class UserService {
 
-    @Autowired
     private final UserRepository repository;
 
     public UserService(UserRepository repository) {
@@ -24,6 +23,7 @@ public class UserService {
     public User create(User user) {
         return repository.save(user);
     }
+
     public void update(User user) {
         checkNotFoundWithId(repository.save(user), user.getId());
     }
@@ -40,7 +40,7 @@ public class UserService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
-    public Collection<User> getAll() {
+    public List<User> getAll() {
         return repository.getAll();
     }
 

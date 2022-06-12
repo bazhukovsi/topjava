@@ -29,9 +29,11 @@ public class SpringMain {
                 System.out.println(meal);
             }
             System.out.println("---------------------------");
-            System.out.println(mealRestController.get(2));
+            System.out.println(mealRestController.get(1));
             System.out.println("---------------------------");
-            System.out.println(mealRestController.get(20));
+            mealRestController.delete(1);
+            System.out.println("---------------------------");
+            System.out.println(mealRestController.get(1));
         }
     }
 }

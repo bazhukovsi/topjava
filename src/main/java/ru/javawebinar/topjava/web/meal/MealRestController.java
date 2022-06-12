@@ -10,9 +10,10 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
-
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
+import java.util.List;
 
 @Controller
 public class MealRestController {
@@ -25,24 +26,32 @@ public class MealRestController {
         int userId = SecurityUtil.authUserId();
         return service.save(meal, userId);
     }
+
     public void update(Meal meal, int userId) {
-        checkNotFoundWithId(service.save(meal, userId), meal.getId());
+        service.save(meal, userId);
     }
 
     public void delete(int id) {
-        service.delete(id);
+        int userId = SecurityUtil.authUserId();
+        service.delete(id, userId);
     }
 
     public Meal get(int id) {
         int userId = SecurityUtil.authUserId();
-        return checkNotFoundWithId(service.get(id, userId), id);
+        return service.get(id, userId);
     }
 
     public Collection<MealTo> getAll() {
-//        int userId = SecurityUtil.authUserId();
-        int userId = 2;
-        return MealsUtil.getTos(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        int userId = SecurityUtil.authUserId();
+//        int userId = 2;
+        return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 
+    public List<MealTo> getBetweenDateTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        int userId = SecurityUtil.authUserId();
+        log.info("Filtered meal for date - {} to {} and time - {} to {}", startDate, endDate, startTime, endTime);
+        return MealsUtil.getFilteredTos(service.getBetweenDate(startDate, endDate, userId),
+                SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+    }
 
 }

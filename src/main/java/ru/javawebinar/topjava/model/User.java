@@ -7,17 +7,11 @@ import java.util.*;
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
 public class User extends AbstractNamedEntity {
-
     private String email;
-
     private String password;
-
     private boolean enabled = true;
-
     private Date registered = new Date();
-
     private Set<Role> roles;
-
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
     public User(Integer id, String name, String email, String password, Role... roles) {
@@ -41,20 +35,12 @@ public class User extends AbstractNamedEntity {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Date getRegistered() {
         return registered;
     }
 
     public void setRegistered(Date registered) {
         this.registered = registered;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public int getCaloriesPerDay() {
@@ -69,8 +55,8 @@ public class User extends AbstractNamedEntity {
         return enabled;
     }
 
-    public boolean isNew() {
-        return id == null;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Set<Role> getRoles() {
@@ -85,15 +71,12 @@ public class User extends AbstractNamedEntity {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email=" + email +
-                ", name=" + name +
-                ", enabled=" + enabled +
-                ", roles=" + roles +
-                ", caloriesPerDay=" + caloriesPerDay +
-                '}';
+        return "User{" + "id=" + id + ", email=" + email + ", name=" + name + ", enabled=" + enabled + ", roles=" + roles + ", caloriesPerDay=" + caloriesPerDay + '}';
     }
 }
