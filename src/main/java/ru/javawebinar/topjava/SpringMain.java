@@ -11,6 +11,7 @@ import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Scanner;
 
 public class SpringMain {
     public static void main(String[] args) {
